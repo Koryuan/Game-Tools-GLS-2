@@ -1,0 +1,84 @@
+Anggota Kelompok:
+- Ferdy tjung - 2201791723 (LA04)
+- Steven Cahya Liko - 2201760125 (LA04)
+- Andre Saputra - 2201765712 (LA04) (Ketua Kelompok)
+- Raditya Awanda - 2201743762 (LB04)
+- Adiarka Soedijarto Adnan - 2201811593 (LB04)
+====================================================================================================================================================================================================================================
+Pertanyaan:
+1. Apa itu Scene Optimization (jelaskan menurut pendapat kalian)
+Scene Optimization merupakan suatu scene dimana dalam proses renderingnya hanya memanfaatkan perspektif tertentu saja tanpa harus melakukan rendering secara keseluruhan, seperti rendering dari tampilan kamera, dll.
+
+2. Apa perbedaan Frustum Culling dan Occlusion Culling
+Frustum Culling hanya mematikan render dari sebbuah objek yang berada diluar penglihatan camera, tetapi tidak mematikan apapun yang tersembunyi dari tampilan dengan overdraw.
+
+Occlusion Calling merupakan sebuah fitur dimana fitur ini digunakan untuk mematikan rendering dari sebuah objek dimana objek tersebut tidak terlihat oleh kamera karena terhalang oleh objek lain.
+
+3. Kondisi scene seperti apa yang cocok untuk menggunakan Occlusion Culling. Berikan 1 contoh game.
+Minecraft
+Pemakaian First Person View (FPS) dalam game ini hanya akan melakukan rendering berdasarkan POV secara first person saja.
+
+4. Apa itu Draw Call Batching
+Adalah proses pengelompokkan beberapa objek untuk digabungkan dalam satu Draw Call
+
+5. Sebutkan kelebihan dan kekurangan masing - masing teknik Draw Call Batching berikut ini:
+-Static Batching
+Performa cukup cepat, tetapi memiliki beberapa kekurangan seperti:
+	-Objek tidak boleh diubah, dihidupkan, atau dimatikan terus - menerus karena akan mempengaruhi dampak kinerja yang sangat tinggi
+	-Objek harus memiliki referensi material yang sama persis untuk digabungkan.
+	-Ketika mencapai ~15 ribu verteks, grup static batching yang bary akan dibuat
+	-Render harus dilakukan secara bersamaan dan berurutan. Jika urutan render memiliki render yang lain di satu kelompok yang sama, maka urutan tersebut akan terpecah menjadi beberapa kelompok.
+
+-Dynamic Batching
+Bisa diubah - ubah secara dinamis dan mempunyai physics dengan rigidbody. Beberapa kekurangannya yaitu diantaranya:
+	-Harus memiliki skala yang sama persis untuk batching (mirrored scale tidak didukung)
+	-Perlu membagikan referensi material yang sama persis untuk digabungkan
+	-Render harus dilakukan secara bersamaan dan berurutan. Jika urutan render memiliki render yang lain di satu kelompok yang sama, maka urutan tersebut akan terpecah menjadi beberapa kelompok.
+	-Setiap objek harus berada di bawah batas puncak yang disebutkan diatas, bergantung kepada setiap shader yang digunakannya.
+
+-GPU Instancing
+Kelebihan:
+-Dapat merender object mesh dalam jumlah banyak secara efisien
+-Penggunaan memori yang minim
+-Tidak mengharuskan sebuah objek menjadi statis
+-Performa yang signifikan dalam rendering project yang sudah dibuat
+
+Kekurangan:
+-Karena GPU Instancing umumnya merender objek non - statis, jika terdapat objek statis yang dirender menggunakan GPU Instance, maka hal tersebut akan berpengaruh pada performa projek
+-Ketika GPU Instancing diaktifkan, ia hanya bisa merender mesh yang identik atau sama dengan jenis yang diterapkan instancing tersebut. Tetapi masih bisa memiliki parameter yang beda seperti menambah variasi atau mengurangi tampilan yang berulang.
+
+6. Jelaskan arti dari Overdraw
+Merupakan suatu proses dimana terjadi penggambaran piksel yang sama lebih dari sekali dalam suatu frame atau scene
+
+7. Jelaskan arti dari Lightmapping / Bake Lighting
+Merupakan suatu proses untuk mengkalkulasi seberapa terang suatu objek dalam scene tersebut, kemudian nantinya akan disimpan dalam suatu tekstur yang bernama lightmap agar bisa digunakan lagi untuk kedepannya
+
+8. Download UnityPackage berikut ini dan import kedalam Unity (sebaiknya menggunakan unity 2018 atau unity 2019)
+https://drive.google.com/file/d/14uFcMRcEy5MtYDyUULutWCkM2SARocyo/view?usp=sharing
+- Buka scene : Demo_Scene
+- Analisa scene tersebut menggunakan Profiler
+- Lakukan Scene Optimization pada scene tersebut
+
+9. Berikan alasan kenapa menggunakan atau tidak menggunakan teknik teknik berikut :
+- Frustum Culling : Menggunakan/Tidak Menggunakan, kenapa ?
+- Occlusion Culling : Menggunakan/Tidak Menggunakan, kenapa ?
+- Static Batching : Menggunakan/Tidak Menggunakan, kenapa ?
+- Dynamic Batching : Menggunakan/Tidak Menggunakan, kenapa ?
+- GPU Instancing : Menggunakan/Tidak Menggunakan, kenapa ?
+- Lightmapping / Bake Lighting : Menggunakan/Tidak Menggunakan, kenapa ?
+
+- Frustum Culling : Tidak Menggunakan, karena ia hanya mematikan rendering objek yang berada di luar kamera saja, tetapi tidak mematikan apapun yang tersembunyi dibalik tampilan overdraw
+- Occlusion Culling : Menggunakan, karena dapat meningkatkan FPS dalam scene tersebut dan meningkatkan performa projek
+- Static Batching : Menggunakan, karena terdapat objek statis dalam scene demo dari projek yang diberikan sekaligus untuk mencegah terjadinya draw call
+- Dynamic Batching : Tidak Menggunakan, karena keterbatasan yang dimiliki cukup besar dimana hanya bisa diaplikasikan kepada mesh yang kurang dari 300 verteks dan 900 verteks artibut, jika diatas 300 verteks maka akan berpengaruh terhadap performa CPU.
+- GPU Instancing : Menggunakan, untuk meningkatkan performa project, dan mengurangi pemanggilan secara redundan dalam sekali operasi/eksekusi
+- Lightmapping / Bake Lighting : Menggunakan, karena lighting merupakan salah satu komponen yang membuat kinerja projek menjadi berat sehingga dibutuhkan pengaturan lighting agar performa dapat meningkat
+
+
+Referensi:
+https://www.unity3dtips.com/unity-batching-dynamic-vs-static/
+https://docs.unity3d.com/Manual/GPUInstancing.html
+https://thegamedev.guru/unity-performance/draw-call-optimization/
+https://thegamedev.guru/unity-gpu-performance/overdraw-optimization/
+https://docs.unity3d.com/Manual/Lightmappers.html
+
